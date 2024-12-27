@@ -10,11 +10,14 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common'
+import { APIListResponse } from 'src/shared/model/response'
+import { getHost } from 'src/shared/utils/getHost'
 
 @ApiTags('Todos')
-@Controller('todos')
-export class TodoController {
+@Controller('/api/v1/todos')
+export class TodoV1Controller {
   constructor(private readonly todoService: TodoService) {}
 
   // GET TODOS
@@ -25,8 +28,12 @@ export class TodoController {
     description: 'Get all todos.',
     type: [Todo],
   })
-  findAll(): Promise<Todo[]> {
-    return this.todoService.findAll()
+  findAll(
+    @Query('page') page = 1,
+    @Query('limit') limit = 20,
+  ): Promise<APIListResponse<Todo[]>> {
+    const host = `${getHost()}/api/v1/todos`
+    return this.todoService.findAll({ page, limit, host })
   }
 
   // GET TODO BY ID

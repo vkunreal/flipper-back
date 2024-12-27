@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { CreateTodoDto, Todo, UpdateTodoDto } from './data'
+import { APIListResponse, SelectParams } from 'src/shared/model/response'
+import { getListFromRepository } from 'src/shared/utils/listService'
 
 @Injectable()
 export class TodoService {
@@ -10,8 +12,19 @@ export class TodoService {
     private readonly todoRepository: Repository<Todo>,
   ) {}
 
-  findAll(): Promise<Todo[]> {
-    return this.todoRepository.find()
+  async findAll({
+    limit,
+    page,
+    host,
+  }: SelectParams): Promise<APIListResponse<Todo[]>> {
+    const data = await getListFromRepository<Todo>({
+      limit,
+      page,
+      host,
+      repository: this.todoRepository,
+    })
+
+    return data
   }
 
   findOne(id: number): Promise<Todo> {
