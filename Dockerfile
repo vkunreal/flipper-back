@@ -1,9 +1,14 @@
 FROM node:20
+
 WORKDIR /app
-EXPOSE 5000
+
 COPY package.json .
+COPY yarn.lock .
+
 RUN yarn
+
 COPY . .
-ENV PORT=5000
-RUN yarn build
-CMD ["yarn", "start"]
+
+EXPOSE 5001
+
+CMD ["yarn", "start:dev"]

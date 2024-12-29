@@ -31,7 +31,7 @@ export class Todo {
   })
   is_attach: boolean
 
-  @Column({ type: 'datetime' })
+  @Column({ type: 'timestamp' })
   @ApiProperty({
     description: exampleTodo.date.description,
     example: exampleTodo.date.value,

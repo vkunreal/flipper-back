@@ -33,7 +33,11 @@ export class TodoV1Controller {
     @Query('limit') limit = 20,
   ): Promise<APIListResponse<Todo[]>> {
     const host = `${getHost()}/api/v1/todos`
-    return this.todoService.findAll({ page, limit, host })
+    return this.todoService.findAll({
+      page: Number(page),
+      limit: Number(limit),
+      host,
+    })
   }
 
   // GET TODO BY ID
